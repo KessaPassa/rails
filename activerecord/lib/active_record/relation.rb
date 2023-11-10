@@ -949,6 +949,12 @@ module ActiveRecord
 
           if rows.is_a?(ActiveRecord::Result)
             duplicate_columns = rows.columns.tally.select { |_, count| count > 1 }.keys
+            unless duplicate_columns.empty?
+              pp "------------"
+              pp logger.class
+              pp logger.method(:warn).source_location
+              pp "------------"
+            end
             logger.warn("Unclarity field name: there are multiple columns with same name (#{duplicate_columns.join(', ')}). You should specify source table name for each column.") unless duplicate_columns.empty?
           end
 
